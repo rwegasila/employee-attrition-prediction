@@ -65,22 +65,5 @@ TrainingTimesLastYear, WorkLifeBalance, YearsAtCompany, YearsInCurrentRole,
 YearsSinceLastPromotion, YearsWithCurrManager
 ```
 
-## Kumbuka Muhimu Kuhusu Usahihi wa Encoding
 
-Notebook yako ilihifadhi (`joblib.dump`) **modeli ya Random Forest tu**, si
-`ColumnTransformer`/`OneHotEncoder` iliyotumika kubadilisha data. Faili
-`preprocessing.py` imejengwa upya kutumia categories za kawaida (standard)
-za dataset hii maarufu ya Kaggle, na imethibitishwa (verified) kutoa
-features 44 sahihi zinazolingana na `model.n_features_in_ == 44`.
 
-Ikiwa dataset yako halisi ina categories tofauti kidogo (mf. maadili mapya
-ya JobRole), ni bora **kuhifadhi na kupakia `ColumnTransformer` yenyewe**
-wakati ujao (`joblib.dump(preprocessor, "preprocessor.pkl")`) ili kuepuka
-utegemezi wa kukisia.
-
-## Kuboresha Baadaye
-
-- Unganisha na database halisi ya wafanyakazi badala ya CSV upload
-- Ongeza historia ya utabiri (prediction history) kwa kila mfanyakazi
-- Weka authentication imara zaidi (JWT / OAuth)
-- Deploy kwenye Streamlit Community Cloud, Render, au server yako
