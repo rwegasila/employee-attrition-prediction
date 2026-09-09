@@ -1,206 +1,86 @@
-Employee Attrition Prediction AI
+# HR Attrition Insight — App ya Kutabiri Uondokaji wa Wafanyakazi
 
-An AI-powered Machine Learning application designed to predict employee attrition based on demographic, job-related, compensation, satisfaction, and work-life balance factors.
+App hii inatumia modeli yako halisi ya **Random Forest (SMOTE)** iliyotrainiwa
+kwenye dataset ya IBM HR Employee Attrition, kuwasaidia HR:
 
-Overview
+- Kuingia kwenye mfumo (login)
+- Kuona dashibodi (dashboard) na grafu za hatari ya uondokaji kwa idara/nafasi ya kazi
+- Kutathmini mfanyakazi mmoja mmoja na kupata uwezekano (%) wa kuondoka
+- Kupata **mapendekezo ya moja kwa moja kwa HR** kulingana na sababu za hatari
+- Kupakia CSV ya wafanyakazi wengi na kupata utabiri wa wote kwa pamoja
 
-Employee attrition is an important challenge for organizations because losing employees can increase recruitment costs, reduce productivity, and affect organizational performance.
+## Muundo wa Faili
 
-This project uses Machine Learning to analyze employee-related features and estimate whether an employee is likely to leave the organization.
+```
+hr_app/
+├── app.py              # App kuu ya Streamlit
+├── preprocessing.py     # Ubadilishaji wa data (encoding) unaolingana na notebook yako
+├── requirements.txt
+├── model/
+│   └── random_forest_smote.pkl   # Modeli yako uliyoipakia
+└── README.md
+```
 
-The project combines:
+## Jinsi ya Kuiendesha (How to Run)
 
-Data Analysis
-Data Preprocessing
-Feature Engineering
-Machine Learning
-Model Evaluation
-Single Employee Prediction
-Interactive Dashboard
-Model Deployment
-Project Objective
+1. Hakikisha una Python 3.9+ imewekwa kwenye kompyuta yako.
+2. Fungua terminal kwenye folda ya `hr_app` kisha weka packages:
 
-The main objective of this project is to build a Machine Learning system capable of predicting employee attrition using information such as:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Age
-Job Level
-Monthly Income
-Distance From Home
-Job Satisfaction
-Environment Satisfaction
-Work-Life Balance
-Overtime
-Business Travel
-Department
-Job Role
-Marital Status
-Education
-Total Working Years
-Years At Company
-Years In Current Role
-Years Since Last Promotion
-Years With Current Manager
-Features
-Numerical Features
+3. Endesha app:
 
-The model uses numerical employee attributes including:
+   ```bash
+   streamlit run app.py
+   ```
 
-Age
-Daily Rate
-Distance From Home
-Education
-Environment Satisfaction
-Hourly Rate
-Job Involvement
-Job Level
-Job Satisfaction
-Monthly Income
-Monthly Rate
-Number of Companies Worked
-Percent Salary Hike
-Performance Rating
-Relationship Satisfaction
-Stock Option Level
-Total Working Years
-Training Times Last Year
-Work-Life Balance
-Years At Company
-Years In Current Role
-Years Since Last Promotion
-Years With Current Manager
-Categorical Features
+4. Itafungua kwenye browser yako (kawaida `http://localhost:8501`).
 
-The model also uses categorical employee information:
+### Akaunti za Kuingia (Demo Login)
 
-Business Travel
-Department
-Education Field
-Gender
-Job Role
-Marital Status
-OverTime
-Machine Learning Pipeline
+| Username | Password  | Role         |
+|----------|-----------|--------------|
+| admin    | admin123  | HR Manager   |
+| hr       | hr2024    | HR Officer   |
 
-The project follows the following Machine Learning workflow:
+> ⚠️ Hizi ni akaunti za majaribio tu (hardcoded ndani ya `app.py`, sehemu ya
+> `USERS`). Kwa matumizi halisi (production), unapaswa kuunganisha na
+> database halisi (mf. PostgreSQL) na kutumia password hashing (mf. bcrypt),
+> si maandishi wazi (plaintext) kama ilivyo hapa kwa mfano.
 
-Raw Employee Data
-        ↓
-Data Cleaning
-        ↓
-Exploratory Data Analysis
-        ↓
-Feature Engineering
-        ↓
-Categorical Encoding
-        ↓
-Feature Scaling
-        ↓
-Train / Validation / Test Split
-        ↓
-Model Training
-        ↓
-Model Evaluation
-        ↓
-Best Model Selection
-        ↓
-Model Export
-        ↓
-Prediction Application
-Prediction System
+## CSV ya Batch Prediction (Dashibodi)
 
-The application allows users to enter information for a single employee and receive a prediction.
+Kwa ukurasa wa "Dashibodi", pakia CSV yenye columns zifuatazo (kama za
+dataset ya awali `WA_Fn-UseC_-HR-Employee-Attrition.csv`):
 
-The system analyzes the provided employee information and produces an estimated attrition prediction.
+```
+Age, BusinessTravel, DailyRate, Department, DistanceFromHome, Education,
+EducationField, EnvironmentSatisfaction, Gender, HourlyRate, JobInvolvement,
+JobLevel, JobRole, JobSatisfaction, MaritalStatus, MonthlyIncome, MonthlyRate,
+NumCompaniesWorked, OverTime, PercentSalaryHike, PerformanceRating,
+RelationshipSatisfaction, StockOptionLevel, TotalWorkingYears,
+TrainingTimesLastYear, WorkLifeBalance, YearsAtCompany, YearsInCurrentRole,
+YearsSinceLastPromotion, YearsWithCurrManager
+```
 
-Example:
+## Kumbuka Muhimu Kuhusu Usahihi wa Encoding
 
-Employee Information
-        ↓
-Preprocessing
-        ↓
-Trained ML Model
-        ↓
-Prediction
-        ↓
-Attrition Risk
-Dashboard
+Notebook yako ilihifadhi (`joblib.dump`) **modeli ya Random Forest tu**, si
+`ColumnTransformer`/`OneHotEncoder` iliyotumika kubadilisha data. Faili
+`preprocessing.py` imejengwa upya kutumia categories za kawaida (standard)
+za dataset hii maarufu ya Kaggle, na imethibitishwa (verified) kutoa
+features 44 sahihi zinazolingana na `model.n_features_in_ == 44`.
 
-The application provides an interactive interface where users can enter employee information.
+Ikiwa dataset yako halisi ina categories tofauti kidogo (mf. maadili mapya
+ya JobRole), ni bora **kuhifadhi na kupakia `ColumnTransformer` yenyewe**
+wakati ujao (`joblib.dump(preprocessor, "preprocessor.pkl")`) ili kuepuka
+utegemezi wa kukisia.
 
-The dashboard includes employee attributes such as:
+## Kuboresha Baadaye
 
-Age
-Daily Rate
-Distance From Home
-Education
-Environment Satisfaction
-Hourly Rate
-Job Involvement
-Job Level
-Job Satisfaction
-Monthly Income
-Monthly Rate
-Number of Companies Worked
-Percent Salary Hike
-Performance Rating
-Relationship Satisfaction
-Stock Option Level
-Total Working Years
-Training Times Last Year
-Work-Life Balance
-Years At Company
-Years In Current Role
-Years Since Last Promotion
-Years With Current Manager
-
-and categorical information such as:
-
-Business Travel
-Department
-Education Field
-Gender
-Job Role
-Marital Status
-OverTime
-Technologies Used
-Python
-Pandas
-NumPy
-Scikit-learn
-Matplotlib
-Seaborn
-Streamlit
-Joblib
-Installation
-
-Clone the repository:
-
-git clone https://github.com/YOUR-USERNAME/employee-attrition-prediction.git
-
-Move into the project directory:
-
-cd employee-attrition-prediction
-
-Install the required dependencies:
-
-pip install -r requirements.txt
-Running the Application
-
-Start the application using:
-
-streamlit run app.py
-
-The application will then open in your browser.
-
-Model Evaluation
-
-The trained model is evaluated using appropriate classification metrics, including:
-
-Accuracy
-Precision
-Recall
-F1-Score
-Confusion Matrix
-ROC-AUC
-
-The final model is selected based on its performance on unseen data rather than training performance alone.
+- Unganisha na database halisi ya wafanyakazi badala ya CSV upload
+- Ongeza historia ya utabiri (prediction history) kwa kila mfanyakazi
+- Weka authentication imara zaidi (JWT / OAuth)
+- Deploy kwenye Streamlit Community Cloud, Render, au server yako
